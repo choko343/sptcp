@@ -2131,17 +2131,18 @@ static bool tcp_write_xmit(struct sock *sk, unsigned int mss_now, int nonagle,
 		limit = max(2 * skb->truesize, sk->sk_pacing_rate >> 10);
 		limit = min_t(u32, limit, sysctl_tcp_limit_output_bytes);
         printk("TCP: net/ipv4/tcp_output.c %s: meta= %p pi= 1 cwnd= %u srtt= %u thresh= %u packetsout %u pacingrate= %u shiftpacing= %u wmemalloc= %u limit= %u\n",__func__, sk, tp->snd_cwnd, (tp->srtt_us>>3) /1000,tp->snd_ssthresh, tp->packets_out,sk->sk_pacing_rate, sk->sk_pacing_rate >> 10,atomic_read(&sk->sk_wmem_alloc),limit);
-
-		if (atomic_read(&sk->sk_wmem_alloc) > limit) {
-			set_bit(TSQ_THROTTLED, &tp->tsq_flags);
-			/* It is possible TX completion already happened
-			 * before we set TSQ_THROTTLED, so we must
-			 * test again the condition.
-			 */
-			smp_mb__after_atomic();
-			if (atomic_read(&sk->sk_wmem_alloc) > limit)
-				break;
-		}
+        if (sysctl_tcp_small_queue_enabled) {
+            if (atomic_read(&sk->sk_wmem_alloc) > limit) {
+                set_bit(TSQ_THROTTLED, &tp->tsq_flags);
+                /* It is possible TX completion already happened
+                 * before we set TSQ_THROTTLED, so we must
+                 * test again the condition.
+                 */
+                smp_mb__after_atomic();
+                if (atomic_read(&sk->sk_wmem_alloc) > limit)
+                    break;
+            }
+        }
 
 		if (unlikely(tcp_transmit_skb(sk, skb, 1, gfp)))
 			break;
