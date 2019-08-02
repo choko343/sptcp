@@ -1039,7 +1039,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
 	if (likely(err <= 0))
 		return err;
 
-    printk("TCP: net/ipv4/tcp_output.c %s: meta= %p pi= 1 cwnd= %u srtt= %u thresh= %u packetsout %u pacingrate= %u shiftpacing= %u wmemalloc= %u send_stall?(enter_cwr)\n",__func__, sk, tp->snd_cwnd, (tp->srtt_us>>3) /1000,tp->snd_ssthresh, tp->packets_out,sk->sk_pacing_rate, sk->sk_pacing_rate >> 10,atomic_read(&sk->sk_wmem_alloc));
+    printk("TCP: net/ipv4/tcp_output.c %s: meta= %p pi= 1 cwnd= %u sendstall\n",__func__, sk, tp->snd_cwnd);
 	tcp_enter_cwr(sk);
 
 	return net_xmit_eval(err);
