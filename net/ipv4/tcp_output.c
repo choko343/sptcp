@@ -53,6 +53,9 @@ int sysctl_tcp_workaround_signed_windows __read_mostly = 0;
 /* Default TSQ limit of four TSO segments */
 int sysctl_tcp_limit_output_bytes __read_mostly = 262144;
 
+/* yokolabo experiment for TSQ on or off */
+int sysctl_tcp_small_queue_enabled __read_mostly = 1;
+
 /* This limits the percentage of the congestion window which we
  * will allow a single TSO frame to consume.  Building TSO frames
  * which are too large can cause TCP streams to be bursty.
