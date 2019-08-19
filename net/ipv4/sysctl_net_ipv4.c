@@ -673,6 +673,14 @@ static struct ctl_table ipv4_table[] = {
 		.mode		= 0644,
 		.proc_handler	= proc_dointvec
 	},
+    {
+		.procname	= "tcp_fixed_tsq_limit",
+		.data		= &sysctl_tcp_fixed_tsq_limit,
+		.maxlen		= sizeof(int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec
+	},
+
 #ifdef CONFIG_NETLABEL
 	{
 		.procname	= "cipso_cache_enable",
