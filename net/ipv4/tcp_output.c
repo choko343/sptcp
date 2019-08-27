@@ -2136,7 +2136,7 @@ static bool tcp_write_xmit(struct sock *sk, unsigned int mss_now, int nonagle,
         if(sysctl_tcp_fixed_tsq_limit == 1){
             limit = sysctl_tcp_limit_output_bytes;
         }
-        printk("TCP: net/ipv4/tcp_output.c %s: meta= %p pi= 1 cwnd= %u srtt= %u thresh= %u packetsout %u pacingrate= %u shiftpacing= %u wmemalloc= %u limit= %u\n",__func__, sk, tp->snd_cwnd, (tp->srtt_us>>3) /1000,tp->snd_ssthresh, tp->packets_out,sk->sk_pacing_rate, sk->sk_pacing_rate >> 10,atomic_read(&sk->sk_wmem_alloc),limit);
+        printk("TCP: net/ipv4/tcp_output.c %s: meta= %p pi= 1 cwnd= %u srtt= %u thresh= %u packetsout %u pacingrate= %u shiftpacing= %u wmemalloc= %u limit= %u\n",__func__, sk, tp->snd_cwnd, jiffies_to_usecs(tp->srtt_us)>>3,tp->snd_ssthresh, tp->packets_out,sk->sk_pacing_rate, sk->sk_pacing_rate >> 10,atomic_read(&sk->sk_wmem_alloc),limit);
         if (sysctl_tcp_small_queue_enabled) {
             if (atomic_read(&sk->sk_wmem_alloc) > limit) {
                 set_bit(TSQ_THROTTLED, &tp->tsq_flags);
