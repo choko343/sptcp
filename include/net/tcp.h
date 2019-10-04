@@ -288,6 +288,7 @@ extern int sysctl_tcp_pacing_ss_ratio;
 extern int sysctl_tcp_pacing_ca_ratio;
 extern int sysctl_tcp_small_queue_enabled; /* add by izumi 2019-08-02 */
 extern int sysctl_tcp_fixed_tsq_limit; /* add by izumi 2019-08-19 */
+extern int sysctl_tcp_local_congestion_control_enabled; /* add by izumi 2019-10-04 */
 
 extern atomic_long_t tcp_memory_allocated;
 extern struct percpu_counter tcp_sockets_allocated;

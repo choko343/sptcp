@@ -59,6 +59,9 @@ int sysctl_tcp_small_queue_enabled __read_mostly = 1;
 /* yokolabo experiment for TSQ limit fixed or not */
 int sysctl_tcp_fixed_tsq_limit __read_mostly = 0;
 
+/* yokolabo experiment for LCC on or off */
+int sysctl_tcp_local_congestion_control_enabled __read_mostly = 1;
+
 /* This limits the percentage of the congestion window which we
  * will allow a single TSO frame to consume.  Building TSO frames
  * which are too large can cause TCP streams to be bursty.
@@ -1043,7 +1046,9 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
 		return err;
 
     printk("TCP: net/ipv4/tcp_output.c %s: meta= %p pi= 1 cwnd= %u sendstall\n",__func__, sk, tp->snd_cwnd);
-	tcp_enter_cwr(sk);
+    if (sysctl_tcp_local_congestion_control_enabled == 1){
+        tcp_enter_cwr(sk);
+    }
 
 	return net_xmit_eval(err);
 }
