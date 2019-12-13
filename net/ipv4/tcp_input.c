@@ -2510,6 +2510,7 @@ void tcp_enter_cwr(struct sock *sk)
 		tp->undo_marker = 0;
 		tcp_init_cwnd_reduction(sk);
 		tcp_set_ca_state(sk, TCP_CA_CWR);
+        printk("meta= %p pi= 1 cwnd= %u lcc\n",sk,tp->snd_cwnd);
 	}
 }
 EXPORT_SYMBOL(tcp_enter_cwr);
